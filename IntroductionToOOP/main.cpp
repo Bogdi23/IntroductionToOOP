@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 using namespace std;
 
-#define delimiter "\n---------------------------------\n"
+#define delimiter "\n--------------------------------------------\n"
 
 class Point
 {
@@ -53,7 +53,15 @@ public:
 	{
 		cout << "Destructor:\t\t" << this << endl;
 	}
-	
+	//		Operators:
+	Point operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssigment:\t\t" << this << endl;
+		return *this;
+	}
+
 	//		Methods:
 	double distance(const Point& other)const
 	{
@@ -78,7 +86,7 @@ double distance(const Point& A, const Point& B)
 }
 
 //#define STRUCT_POINT
-#define DISTANCE_CHECK
+//#define DISTANCE_CHECK
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -116,7 +124,6 @@ void main()
 	cout << delimiter << endl;
 #endif //  DISTANCE_CHECK
 
-
 #ifdef CONSTRUCTORS_CHECK
 	Point A;
 	A.print();
@@ -127,8 +134,28 @@ void main()
 	Point C(7, 8);
 	C.print();
 
-	Point D = C;
+	Point D = C;	//Copy constructor
 	D.print();
+
+	Point E;		//Default constructor
+	E = D;			//Assigment operator
+	E.print();
+
 #endif // CONSTRUCTORS_CHECK
+
+	int a, b, c;
+
+	a = b = c = 0;
+
+	cout << a << "\t" << b << "\t" << c << "\t" << endl;
+
+	Point A, B, C;
+	cout << delimiter << endl;
+	A = B = C = Point(2, 3);
+	//Point(2, 3) - здесь мы явно вызываем конструктор, и создаём временный безымянный объект
+	cout << delimiter << endl;
+	A.print();
+	B.print();
+	C.print();
 
 }
