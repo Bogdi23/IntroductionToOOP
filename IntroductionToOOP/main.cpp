@@ -1,5 +1,7 @@
-#include <iostream>
+п»ї#include <iostream>
 using namespace std;
+
+#define delimiter "\n---------------------------------\n"
 
 class Point
 {
@@ -22,17 +24,52 @@ public:
 	{
 		this -> y = y;
 	}
-	double distance(Point other)
+
+	//		Constructors:
+	/*Point()
+	{
+		x = y = 0;
+		cout << "DefaultConstructors:\t" << this << endl;
+	}*/
+	/*Point(double x)
+	{
+		this->x = x;
+		this->y = 0;
+		cout << "SingleArgumentConstructor:" << this << endl;
+	}*/
+	Point(double x = 0, double y = 0)
+	{
+		this->x = x;
+		this->y = y;
+		cout << "Constructor:" << this << endl;
+	}
+	Point(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+	~Point()
+	{
+		cout << "Destructor:\t\t" << this << endl;
+	}
+	
+	//		Methods:
+	double distance(const Point& other)const
 	{
 		double x_distance = this->x - other.x;
 		double y_distance = this->y - other.y;
 		double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
 		return distance;
 	}
-	
+	void print()const
+	{
+		cout << this << ": X = " << x << ",\tY = " << y << endl;
+	}
+
 };
 
-double distance(Point A, Point B)
+double distance(const Point& A, const Point& B)
 {
 	double x_distance = A.get_x() - B.get_x();
 	double y_distance = A.get_y() - B.get_y();
@@ -41,6 +78,8 @@ double distance(Point A, Point B)
 }
 
 //#define STRUCT_POINT
+#define DISTANCE_CHECK
+//#define CONSTRUCTORS_CHECK
 
 void main()
 {
@@ -58,6 +97,7 @@ void main()
 	cout << pA->x << "\t" << pA->y << endl;
 #endif // STRUCT_POINT
 
+#ifdef DISTANCE_CHECK
 	Point A;
 	A.set_x(2);
 	A.set_y(3);
@@ -67,8 +107,28 @@ void main()
 	B.set_x(7);
 	B.set_y(8);
 	cout << B.get_x() << "\t" << B.get_y() << endl;
+	cout << delimiter << endl;
+	cout << "Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ С‚РѕС‡РєРё 'A' РґРѕ С‚РѕС‡РєРё 'B': " << A.distance(B) << endl;
+	cout << delimiter << endl;
+	cout << "Р Р°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ С‚РѕС‡РєРё 'B' РґРѕ С‚РѕС‡РєРё 'A': " << B.distance(A) << endl;
+	cout << delimiter << endl;
+	cout << "Р Р°СЃСЃС‚РѕСЏРЅРёРµ РјСѓР¶РґСѓ С‚РѕС‡РєР°РјРё 'A' Рё 'B': " << distance(A, B) << endl;
+	cout << delimiter << endl;
+#endif //  DISTANCE_CHECK
 
-	cout << "Расстояние от точки 'A' до точки 'B': " << A.distance(B) << endl;
-	cout << "Расстояние от точки 'B' до точки 'A': " << B.distance(A) << endl;
-	cout << "Расстояние мужду точками 'A' и 'B': " << distance(A, B) << endl;
+
+#ifdef CONSTRUCTORS_CHECK
+	Point A;
+	A.print();
+
+	Point B = 5;
+	B.print();
+
+	Point C(7, 8);
+	C.print();
+
+	Point D = C;
+	D.print();
+#endif // CONSTRUCTORS_CHECK
+
 }
