@@ -1,11 +1,11 @@
-#include <iostream>
+п»ї#include <iostream>
 using namespace std;
 
 class Fraction
 {
-	int integer;		//Целая часть
-	int numerator;		//Числитель
-	int denominator;	//Знаменатель
+	int integer;		//Р¦РµР»Р°СЏ С‡Р°СЃС‚СЊ
+	int numerator;		//Р§РёСЃР»РёС‚РµР»СЊ
+	int denominator;	//Р—РЅР°РјРµРЅР°С‚РµР»СЊ
 public:
 	int get_integer()const
 	{
@@ -84,17 +84,43 @@ public:
 		return *this;
 	}
 
+	Fraction& operator++()		//Prefix increment
+	{
+		++integer;
+		return *this;
+	}
+
+	Fraction operator++(int)	//Postfix (Suffix) increment
+	{
+		Fraction old = *this;
+		++integer;
+		return old;
+	}
+
+	Fraction& operator--()		//Prefix Decrement
+	{
+		--integer;
+		return *this;
+	}
+
+	Fraction operator--(int)	//Postfix Decrement
+	{
+		Fraction old = *this;
+		--integer;
+		return old;
+	}
+
 	//				Methods:
 	Fraction& to_improper()
 	{
-		//перевод в неправильную дробь:
+		//РїРµСЂРµРІРѕРґ РІ РЅРµРїСЂР°РІРёР»СЊРЅСѓСЋ РґСЂРѕР±СЊ:
 		numerator += integer * denominator;
 		integer = 0;
 		return *this;
 	}
 	Fraction& to_proper()
 	{
-		//перевод в правильную дробь:
+		//РїРµСЂРµРІРѕРґ РІ РїСЂР°РІРёР»СЊРЅСѓСЋ РґСЂРѕР±СЊ:
 		integer += numerator / denominator;
 		numerator %= denominator;
 		return *this;
@@ -135,6 +161,43 @@ Fraction operator*(Fraction left, Fraction right)
 		).to_proper();
 }
 
+Fraction operator/(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	return Fraction
+	(
+		left.get_numerator() * right.get_denominator(),
+		left.get_denominator() * right.get_numerator()
+	).to_proper();
+}
+
+Fraction operator+(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	
+	int numerator = left.get_numerator() * right.get_denominator() +
+	right.get_numerator() * left.get_denominator();
+
+	int denominator = left.get_denominator() * right.get_denominator();
+	return Fraction
+	(numerator, denominator).to_proper();
+}
+
+Fraction operator-(Fraction left, Fraction right)
+{
+	left.to_improper();
+	right.to_improper();
+	
+	int numerator = left.get_numerator() * right.get_denominator() -
+	right.get_numerator() * left.get_denominator();
+
+	int denominator = left.get_denominator() * right.get_denominator();
+	return Fraction
+	(numerator, denominator).to_proper();
+}
+
 //#define CONSTRUCTORS_CHECK
 
 void main()
@@ -162,4 +225,19 @@ void main()
 
 	Fraction C = A * B;
 	C.print();
+
+	Fraction D = A / B;
+	D.print();
+
+	Fraction E = A + B;
+	E.print();
+
+	Fraction F = A - B;
+	F.print();
+
+	Fraction G = ++A;
+	G.print();
+	G = --A;
+	G.print();
+
 }
