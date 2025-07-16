@@ -57,12 +57,26 @@ public:
 	//		Operators:
 	String& operator=(const String& other)
 	{
+		//0) Проверяем, не является ли тот объект нашим объектом:
+		if (this == &other)return *this;
+		//1) Удаляем старую динамическую память:
+		delete[] this->str;
+		//Deep copy:
 		this->size = other.size;
+		//2) Выделяем новую динамическую память:
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)
 			this->str[i] = other.str[i];
 		cout << "CopyAssignment:\t\t" << this << endl;
 		return *this;
+	}
+	char operator[](int i)const
+	{
+		return str[i];
+	}
+	char& operator[](int i)
+	{
+		return str[i];
 	}
 	//		Methods:
 	void print()const
@@ -76,10 +90,12 @@ String operator+(const String& left, const String& right)
 	String result(left.get_size() + right.get_size() - 1);
 	for (int i = 0; i < left.get_size(); i++)
 	{
-		result.get_str()[i] = left.get_str()[i];
+		result[i] = left[i];
+		//result.get_str()[i] = left.get_str()[i];
 	}
 	for (int i = 0; i < right.get_size(); i++)
-		result.get_str()[i + left.get_size() - 1] = right.get_str()[i];
+		result[i + left.get_size() - 1] = right[i];
+		//result.get_str()[i + left.get_size() - 1] = right.get_str()[i];
 	return result;
 }
 std::ostream& operator<<(std::ostream& os, const String& obj)
@@ -87,7 +103,8 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
-//#define CONSTRUCTORS_CHECK
+#define CONSTRUCTORS_CHECK
+//#define COPY_SEMANTIC_CHECK
 
 void main()
 {
@@ -113,6 +130,7 @@ void main()
 	cout << str5 << endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef COPY_SEMANTIC_CHECK
 	String str1 = "Hello";
 	cout << str1 << endl;
 
@@ -123,4 +141,6 @@ void main()
 	String str4;
 	str4 = str3;
 	cout << str4 << endl;
+#endif // COPY_SEMANTIC_CHECK
+
 }
