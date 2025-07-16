@@ -54,6 +54,16 @@ public:
 		size = 0;
 		cout << "Destructor:\t\t" << this << endl;
 	}
+	//		Operators:
+	String& operator=(const String& other)
+	{
+		this->size = other.size;
+		this->str = new char[size] {};
+		for (int i = 0; i < size; i++)
+			this->str[i] = other.str[i];
+		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
+	}
 	//		Methods:
 	void print()const
 	{
@@ -109,5 +119,8 @@ void main()
 	String str2 = str1;
 	cout << str2 << endl;
 
-
+	String str3 = "World";
+	String str4;
+	str4 = str3;
+	cout << str4 << endl;
 }
